@@ -1,0 +1,146 @@
+[
+  {
+    "_id": {
+      "$oid": "62b1a0dd73881ec6f1708b84"
+    },
+    "name": "11,308 Gaming Keyboard",
+    "image": "https://thumbs.dreamstime.com/b/gaming-keyboard-rgb-light-white-mechanical-backlight-212226943.jpg",
+    "description": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book",
+    "rating": 4,
+    "numReviews": 4,
+    "price": 89,
+    "countInStock": 3,
+    "reviews": [],
+    "__v": 0,
+    "createdAt": {
+      "$date": {
+        "$numberLong": "1655808221965"
+      }
+    },
+    "updatedAt": {
+      "$date": {
+        "$numberLong": "1655808221965"
+      }
+    }
+  },
+  {
+    "_id": {
+      "$oid": "62b1a0dd73881ec6f1708b85"
+    },
+    "name": "HaixclvyE G95 35 Keys",
+    "image": "https://m.media-amazon.com/images/I/511mEFx-x5L._AC_SX425_.jpg",
+    "description": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book",
+    "rating": 2,
+    "numReviews": 2,
+    "price": 599,
+    "countInStock": 10,
+    "reviews": [],
+    "__v": 0,
+    "createdAt": {
+      "$date": {
+        "$numberLong": "1655808221967"
+      }
+    },
+    "updatedAt": {
+      "$date": {
+        "$numberLong": "1655808221967"
+      }
+    }
+  },
+  {
+    "_id": {
+      "$oid": "62b1a0dd73881ec6f1708b86"
+    },
+    "name": "Redragon M801 Gaming Mouse",
+    "image": "https://m.media-amazon.com/images/I/611jbF+FbbL._AC_SL1500_.jpg",
+    "description": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book",
+    "rating": 3.5,
+    "numReviews": 3,
+    "price": 929,
+    "countInStock": 0,
+    "reviews": [],
+    "__v": 0,
+    "createdAt": {
+      "$date": {
+        "$numberLong": "1655808221969"
+      }
+    },
+    "updatedAt": {
+      "$date": {
+        "$numberLong": "1655808221969"
+      }
+    }
+  },
+  {
+    "_id": {
+      "$oid": "62b1a0dd73881ec6f1708b87"
+    },
+    "name": "Corsair RGB Headset",
+    "image": "https://i.pinimg.com/474x/21/85/f6/2185f66e4156dbe2e7ee13f2637f1f40.jpg",
+    "description": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book",
+    "rating": 5,
+    "numReviews": 9,
+    "price": 399,
+    "countInStock": 10,
+    "reviews": [],
+    "__v": 0,
+    "createdAt": {
+      "$date": {
+        "$numberLong": "1655808221969"
+      }
+    },
+    "updatedAt": {
+      "$date": {
+        "$numberLong": "1655808221969"
+      }
+    }
+  },
+  {
+    "_id": {
+      "$oid": "62b1a0dd73881ec6f1708b88"
+    },
+    "name": "Lace Walking Shoes For Boys & Girls  (Pink)",
+    "image": "/images/2.png",
+    "description": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book",
+    "rating": 2,
+    "numReviews": 2,
+    "price": 49,
+    "countInStock": 7,
+    "reviews": [],
+    "__v": 0,
+    "createdAt": {
+      "$date": {
+        "$numberLong": "1655808221970"
+      }
+    },
+    "updatedAt": {
+      "$date": {
+        "$numberLong": "1655808221970"
+      }
+    }
+  },
+  {
+    "_id": {
+      "$oid": "62b1a0dd73881ec6f1708b89"
+    },
+    "name": "Women Red Heels Sandal",
+    "image": "/images/1.png",
+    "description": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book",
+    "rating": 0,
+    "numReviews": 0,
+    "price": 29,
+    "countInStock": 0,
+    "reviews": [],
+    "__v": 0,
+    "createdAt": {
+      "$date": {
+        "$numberLong": "1655808221970"
+      }
+    },
+    "updatedAt": {
+      "$date": {
+        "$numberLong": "1655808221970"
+      }
+    }
+  }
+]
