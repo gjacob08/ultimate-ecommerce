@@ -5,10 +5,17 @@ import ImportData from "./DataImport.js";
 import productRoute from "./routes/ProductRoutes.js";
 import userRoute from "./routes/UserRoutes.js";
 import { errorHandler, notFound } from "./Middleware/Errors.js";
+import bodyParser from "body-parser";
+import cors from "cors";
 
 dotenv.config();
 connectDb();
 const app = express();
+
+app.use( cors({ origin: "http://localhost:3000", methods: "GET,POST,PUT,DELETE", credentials: true, exposedHeaders: ['set-cookie'] }) );
+
+app.use(bodyParser.urlencoded({ extended: false }))
+app.use(bodyParser.json())
 
 // API
 app.use("/api/import", ImportData);

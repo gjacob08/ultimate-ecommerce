@@ -1,7 +1,11 @@
 import { Routes, Route, Outlet } from "react-router-dom";
 import { useEffect, useState } from "react";
+import ShoppingCart from './components/ShoppingCart';
 import Sidebar from './components/Sidebar';
-import Dashboard from "./pages/Dashboard";
+import TopBar from './components/TopBar';
+
+import ProductInfo from './pages/ProductInfo';
+import Dashboard from './pages/Dashboard';
 import Inventory from './pages/Inventory';
 import Logistics from './pages/Logistics';
 import Products from './pages/Products';
@@ -11,7 +15,7 @@ import Signup from './pages/Signup';
 import Login from './pages/Login';
 import About from './pages/About';
 import Home from './pages/Home';
-import Axios from "axios";
+import Axios from 'axios';
 import './App.css';
 
 const AppLayout = () => {
@@ -29,10 +33,12 @@ const AppLayout = () => {
   return (
     <>
       <nav className="max-h-full flex w-2/12">
-        <Sidebar user={ user } />
+        <Sidebar user={user} />
       </nav>
       <div className="w-10/12">
-       <Outlet />
+        <TopBar />
+        <Outlet />
+        <ShoppingCart />
       </div>
     </>
   );
@@ -49,7 +55,8 @@ function App() {
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/inventory" element={<Inventory />} />
           <Route path="/logistics" element={<Logistics />} />
-          <Route path="/products" element={<Products />} />
+          <Route path="/products" element={<Products />}/>
+          <Route path="/products/:productId" element={<ProductInfo />} />
           <Route path="/services" element={<Services />} />
           <Route path="/support" element={<Support />} />
           <Route path="/about" element={<About />} />
