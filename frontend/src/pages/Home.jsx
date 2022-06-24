@@ -5,7 +5,7 @@ export default function Home() {
     return (
         <div className="bg-white">
             <div className="max-w-xl mx-auto py-16 px-4 sm:py-8 sm:px-6 lg:max-w-7xl lg:px-2">
-                <h2 id="products-heading" className="ml-8 text-2xl"> Home </h2>
+                <h2 id="products-heading" className="ml-14 text-2xl"> Home </h2>
                 <div className="relative bg-white pt-2 pb-32 overflow-hidden">
                     <div className="relative">
                         <div className="lg:mx-auto lg:max-w-8xl lg:px-8 lg:grid lg:grid-cols-2 lg:grid-flow-col-dense lg:gap-24">
