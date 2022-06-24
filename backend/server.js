@@ -9,6 +9,7 @@ import { errorHandler, notFound } from "./Middleware/Errors.js";
 dotenv.config();
 connectDb();
 const app = express();
+app.use(express.json());
 
 // API
 app.use("/api/import", ImportData);
@@ -22,3 +23,4 @@ app.use(errorHandler);
 const PORT = process.env.PORT || 1000;
 
 app.listen(PORT, console.log(`server running on port ${PORT}...`));
+
