@@ -11,6 +11,7 @@ import cors from "cors";
 dotenv.config();
 connectDb();
 const app = express();
+app.use(express.json());
 
 app.use( cors({ origin: "http://localhost:3000", methods: "GET,POST,PUT,DELETE", credentials: true, exposedHeaders: ['set-cookie'] }) );
 
@@ -29,3 +30,4 @@ app.use(errorHandler);
 const PORT = process.env.PORT || 1000;
 
 app.listen(PORT, console.log(`server running on port ${PORT}...`));
+
