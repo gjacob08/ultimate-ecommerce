@@ -1,51 +1,24 @@
 /* This example requires Tailwind CSS v2.0+ */
-import { Fragment, useState } from 'react'
+import { Fragment } from 'react'
 import { Dialog, Transition } from '@headlessui/react'
 import { XIcon } from '@heroicons/react/outline'
 
 import { useGlobal } from '../Global'
 
-const products = [
-  {
-    id: 1,
-    name: 'Throwback Hip Bag',
-    href: '#',
-    color: 'Salmon',
-    price: '$90.00',
-    quantity: 1,
-    imageSrc: 'https://tailwindui.com/img/ecommerce-images/shopping-cart-page-04-product-01.jpg',
-    imageAlt: 'Salmon orange fabric pouch with match zipper, gray zipper pull, and adjustable hip belt.',
-  },
-  {
-    id: 2,
-    name: 'Medium Stuff Satchel',
-    href: '#',
-    color: 'Blue',
-    price: '$32.00',
-    quantity: 1,
-    imageSrc: 'https://tailwindui.com/img/ecommerce-images/shopping-cart-page-04-product-02.jpg',
-    imageAlt:
-      'Front of satchel with blue canvas body, black straps and handle, drawstring top, and front zipper pouch.',
-  },
-  // More products...
-]
-
 export default function ShoppingCart() {
-  let total = 0;
-
   const toggleCart = useGlobal((state) => state.toggleCart)
 
   const removeItem = useGlobal((state) => state.removeItem)
   const remove = (item) => { removeItem( item ) }
 
   const cartItems = useGlobal((state) => state.cartItems)
-  const open = useGlobal((state) => state.cartOpen)
+  const cartOpen = useGlobal((state) => state.cartOpen)
 
   return (
-    <Transition.Root show={open} as={Fragment}>
-      <Dialog as="div" className="relative z-10" onClose={toggleCart}>
+    <Transition.Root show={ cartOpen } as={ Fragment }>
+      <Dialog as="div" className="relative z-10" onClose={ toggleCart }>
         <Transition.Child
-          as={Fragment}
+          as={ Fragment }
           enter="ease-in-out duration-500"
           enterFrom="opacity-0"
           enterTo="opacity-100"
@@ -60,7 +33,7 @@ export default function ShoppingCart() {
           <div className="absolute inset-0 overflow-hidden">
             <div className="pointer-events-none fixed inset-y-0 right-0 flex max-w-full pl-10">
               <Transition.Child
-                as={Fragment}
+                as={ Fragment }
                 enter="transform transition ease-in-out duration-500 sm:duration-700"
                 enterFrom="translate-x-full"
                 enterTo="translate-x-0"
@@ -89,11 +62,11 @@ export default function ShoppingCart() {
                         <div className="flow-root">
                           <ul role="list" className="-my-6 divide-y divide-gray-200">
                             {cartItems.map((cartItem) => (
-                              <li key={cartItem._id} className="flex py-6">
+                              <li key={ cartItem._id } className="flex py-6">
                                 <div className="h-24 w-24 flex-shrink-0 overflow-hidden rounded-md border border-gray-200">
                                   <img
-                                    src={cartItem.image}
-                                    alt={cartItem.image}
+                                    src={ cartItem.image }
+                                    alt={ cartItem.image }
                                     className="h-full w-full object-cover object-center"
                                   />
                                 </div>
@@ -102,9 +75,9 @@ export default function ShoppingCart() {
                                   <div>
                                     <div className="flex justify-between text-base font-medium text-gray-900">
                                       <h3>
-                                        <a href={cartItem.href}> {cartItem.name} </a>
+                                        <a href={ cartItem.href }> { cartItem.name } </a>
                                       </h3>
-                                      <p className="ml-4">{"$"+cartItem.price}</p>
+                                      <p className="ml-4">{ "$" + cartItem.price }</p>
                                     </div>
                                     <p className="mt-1 text-sm text-gray-500">Item Tag</p>
                                   </div>
@@ -113,7 +86,7 @@ export default function ShoppingCart() {
 
                                     <div className="flex">
                                       <button
-                                        onClick={ () => remove(cartItem) }
+                                        onClick={ () => remove( cartItem ) }
                                         className="font-medium text-indigo-600 hover:text-indigo-500" >
                                         Remove
                                       </button>

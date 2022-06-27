@@ -22,10 +22,11 @@ const AppLayout = () => {
 
   const [user, setUser] = useState(null);
 
+  // Gets the user information using Session and Cookie.
   useEffect(() => {
     const getUser = () => {
       Axios.get("http://localhost:5000/api/users/login/success", { headers: { Accept: "application/json", "Content-Type": "application/json", "Access-Control-Allow-Credentials": true, }, withCredentials: true }) 
-        .then((resObject) => { console.log(resObject.data); setUser(resObject.data) }) 
+        .then((resObject) => { setUser(resObject.data) }) 
         .catch((err) => { console.log(err) })}
     getUser()
   }, [])

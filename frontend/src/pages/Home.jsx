@@ -1,4 +1,3 @@
-/* This example requires Tailwind CSS v2.0+ */
 import { InboxIcon, SparklesIcon } from '@heroicons/react/outline'
 
 export default function Home() {
