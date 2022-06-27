@@ -20,6 +20,7 @@ const adminNavigation = [
   { name: 'Home', href: '/', icon: HomeIcon},
   { name: 'Dashboard', href: 'dashboard', icon: HomeIcon},
   { name: 'About', href: 'about', icon: NewspaperIcon},
+  { name: 'Products', href: 'products', icon: FolderIcon},
   { name: 'Inventory', href: 'inventory', icon: FolderIcon},
   { name: 'Services', href: 'services', icon: UsersIcon},
   { name: 'Support', href: 'support', icon: SupportIcon},

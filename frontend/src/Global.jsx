@@ -4,7 +4,13 @@ import { devtools, persist } from 'zustand/middleware'
 let global = (set) => ({
     cartItems: [],
     cartOpen: false,
+    importProductModalOpen: false,
+    updateProductModalOpen: false,
+    productUpdateId: "",
     toggleCart: () => set((state) => ({ cartOpen: !state.cartOpen })),
+    toggleImportProductModal: () => set((state) => ({ importProductModalOpen: !state.importProductModalOpen })),
+    toggleUpdateProductModal: () => set((state) => ({ updateProductModalOpen: !state.updateProductModalOpen })),
+    setProductUpdateId: (id) => set((state) => ({ productUpdateId: state.productUpdateId = id })),
     addItem: (item) => set((state) => ({ cartItems: [...state.cartItems, item] })),
     removeItem: (item) => set((state) => ({ cartItems: state.cartItems.filter((cartItem) => cartItem._id !== item._id)} ))
 })

@@ -51,7 +51,7 @@ const proxyUsers = [
 ]
 
 const userRoute = express.Router();
-console.log(mongoose.Types.ObjectId.isValid("62b32b8a5f040d635f819b28"));
+// console.log(mongoose.Types.ObjectId.isValid("62b32b8a5f040d635f819b28"));
 
 userRoute.get("/login/success", (req, res) => {
     res.send( false ? proxyUsers[0] : proxyUsers[1] );
@@ -202,26 +202,26 @@ userRoute.post(
 );
 
 //UPDATE PROFILE
-userRoute.put( "/profile/:id", asyncHandler(async (req, res) => {
+// userRoute.put( "/profile/:id", asyncHandler(async (req, res) => {
 
-    // Get Task Id to modify
-    const id = req.params.id;
+//     // Get Task Id to modify
+//     const id = req.params.id;
 
-    // Get Data to be modified
-    const data = req.body;
+//     // Get Data to be modified
+//     const data = req.body;
 
-    // Execute Update
-    User.findOneAndUpdate({ _id: id }, { ...data }, { new: true })
-    .then( updatedUser => { res.json({ user: updatedUser }) })
-    .catch( error => {
-        res.status(500).json({
-            'status': 'Error 123',
-            'message': 'Error in Database Operation!',
-            'error': error
-        })
-    });
-  })
-);
+//     // Execute Update
+//     User.findOneAndUpdate({ _id: id }, { ...data }, { new: true })
+//     .then( updatedUser => { res.json({ user: updatedUser }) })
+//     .catch( error => {
+//         res.status(500).json({
+//             'status': 'Error 123',
+//             'message': 'Error in Database Operation!',
+//             'error': error
+//         })
+//     });
+//   })
+// );
 
 // userRoute.post(
 //   "/profile",

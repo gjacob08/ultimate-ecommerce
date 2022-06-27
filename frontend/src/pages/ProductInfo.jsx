@@ -74,12 +74,12 @@ export default function ProductInfo() {
     const add = () => { addItem( productInfo ) }
 
     let { productId } = useParams();
-    const [productInfo, getProductInfo] = useState(null);
+    const [productInfo, setProductInfo] = useState(null);
 
     useEffect(() => {
         const getProductInfoEffect = () => {
         Axios.get("http://localhost:5000/api/products/"+productId, { headers: { Accept: "application/json", "Content-Type": "application/json", "Access-Control-Allow-Credentials": true, }, withCredentials: true }) 
-            .then((resObject) => { console.log(resObject.data); getProductInfo(resObject.data) }) 
+            .then((resObject) => { console.log(resObject.data); setProductInfo(resObject.data) }) 
             .catch((err) => { console.log(err) })}
         getProductInfoEffect()
     }, [])
