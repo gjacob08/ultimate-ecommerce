@@ -1,6 +1,7 @@
 /* This example requires Tailwind CSS v2.0+ */
 import { Fragment, useState, useEffect } from 'react'
 import { Dialog, Transition } from '@headlessui/react'
+import CategorySelector from "./CategorySelector"
 import Axios from "axios"
 
 import { useGlobal } from '../Global'
@@ -23,10 +24,10 @@ export default function UpdateProductModal() {
     }, [productId])
 
   return !product ? null : (
-    <Transition.Root show={updateProductModalOpen} as={Fragment}>
-      <Dialog as="div" className="relative z-10" onClose={toggleUpdateProductModal}>
+    <Transition.Root show={ updateProductModalOpen } as={ Fragment }>
+      <Dialog as="div" className="relative z-10" onClose={ toggleUpdateProductModal }>
         <Transition.Child
-          as={Fragment}
+          as={ Fragment }
           enter="ease-out duration-300"
           enterFrom="opacity-0"
           enterTo="opacity-100"
@@ -40,7 +41,7 @@ export default function UpdateProductModal() {
         <div className="fixed z-10 inset-0 overflow-y-auto">
           <div className="flex items-end sm:items-center justify-center min-h-full p-4 text-center sm:p-0">
             <Transition.Child
-              as={Fragment}
+              as={ Fragment }
               enter="ease-out duration-300"
               enterFrom="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
               enterTo="opacity-100 translate-y-0 sm:scale-100"
@@ -66,6 +67,7 @@ export default function UpdateProductModal() {
                                 <div className="mt-1 mx-2">
                                   <input
                                     id="productname"
+                                    key={ product._id }
                                     defaultValue={ product.name }
                                     name="name"
                                     type="text"
@@ -79,14 +81,7 @@ export default function UpdateProductModal() {
                                   Category
                                 </label>
                                 <div className="mt-1 mx-2">
-                                  <input
-                                    id="productcateory"
-                                    value={ product.category }
-                                    name="category"
-                                    type="text"
-                                    required
-                                    className="appearance-none w-full block px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-                                  />
+                                    <CategorySelector selections={ [{name: "Keyboard"}, {name: "Mouse"}, {name: "Headset"}, {name: "RAM"}, {name: "Cooling Fan"}] }/>
                                 </div>
                               </div>
                             </div>
@@ -99,7 +94,8 @@ export default function UpdateProductModal() {
                           <div className="mt-1 mx-2">
                             <textarea
                               id="productdescription"
-                              value={ product.description }
+                              key={ product._id }
+                              defaultValue={ product.description }
                               name="description"
                               required
                               className="appearance-none w-full block px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
@@ -114,7 +110,8 @@ export default function UpdateProductModal() {
                           <div className="mt-1 mx-2">
                             <input
                               id="productimage"
-                              value={ product.image }
+                              key={ product._id }
+                              defaultValue={ product.image }
                               name="image"
                               type="text"
                               required
@@ -131,7 +128,8 @@ export default function UpdateProductModal() {
                               <div className="mt-1 mx-2">
                                 <input
                                   id="productprice"
-                                  value={ product.price }
+                                  key={ product._id }
+                                  defaultValue={ product.price }
                                   name="price"
                                   type="text"
                                   required
@@ -146,7 +144,8 @@ export default function UpdateProductModal() {
                               <div className="mt-1 mx-2">
                                 <input
                                   id="productstocks"
-                                  value={ product.countInStock }
+                                  key={ product._id }
+                                  defaultValue={ product.countInStock }
                                   name="countInStock"
                                   type="text"
                                   required
