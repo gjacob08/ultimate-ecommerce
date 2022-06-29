@@ -1,6 +1,6 @@
-/* This example requires Tailwind CSS v2.0+ */
-import { Fragment } from 'react'
 import { Dialog, Transition } from '@headlessui/react'
+import CategorySelector from "./CategorySelector"
+import { Fragment } from 'react'
 
 import { useGlobal } from '../Global'
 
@@ -64,13 +64,7 @@ export default function ImportProductModal() {
                                   Category
                                 </label>
                                 <div className="mt-1 mx-2">
-                                  <input
-                                    id="productcateory"
-                                    name="category"
-                                    type="text"
-                                    required
-                                    className="appearance-none w-full block px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-                                  />
+                                  <CategorySelector selections={ [{name: "Keyboard"}, {name: "Mouse"}, {name: "Headset"}, {name: "RAM"}, {name: "Cooling Fan"}] }/>
                                 </div>
                               </div>
                             </div>
