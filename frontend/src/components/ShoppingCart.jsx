@@ -2,6 +2,7 @@
 import { Fragment } from 'react'
 import { Dialog, Transition } from '@headlessui/react'
 import { XIcon } from '@heroicons/react/outline'
+import { Link } from 'react-router-dom'
 
 import { useGlobal } from '../Global'
 
@@ -82,7 +83,7 @@ export default function ShoppingCart() {
                                     <p className="mt-1 text-sm text-gray-500">Item Tag</p>
                                   </div>
                                   <div className="flex flex-1 items-end justify-between text-sm">
-                                    <p className="text-gray-500">Qty "item.quantity"</p>
+                                    <p className="text-gray-500">Qty {cartItem.countInStock}</p>
 
                                     <div className="flex">
                                       <button
@@ -107,12 +108,11 @@ export default function ShoppingCart() {
                       </div>
                       <p className="mt-0.5 text-sm text-gray-500">Shipping and taxes calculated at checkout.</p>
                       <div className="mt-6">
-                        <a
-                          href="#"
+                        <Link to="/checkout-page"
                           className="flex items-center justify-center rounded-md border border-transparent bg-indigo-600 px-6 py-3 text-base font-medium text-white shadow-sm hover:bg-indigo-700"
                         >
                           Checkout
-                        </a>
+                        </Link>
                       </div>
                       <div className="mt-6 flex justify-center text-center text-sm text-gray-500">
                         <p>

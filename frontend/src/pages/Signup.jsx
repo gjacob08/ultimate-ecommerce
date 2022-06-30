@@ -1,6 +1,6 @@
 import Logo from "../assets/images/logo.jpg"
 
-export default function Example() {
+export default function Signup() {
     return (
         <>
             <div className="bg-gray-200 w-full h-screen min-h-full flex flex-col py-12 sm:px-6 lg:px-8">
