@@ -10,21 +10,22 @@ import TopBar from './components/TopBar';
 
 // REACT IMPORTED PAGES
 import ProductInfo from './pages/ProductInfo';
-import Dashboard from './pages/Dashboard';
+import Dashboard from './pages/Dashboard/Dashboard';
 import Inventory from './pages/Inventory';
 import Logistics from './pages/Logistics';
+import Checkout from './pages/Checkout';
 import Products from './pages/Products';
 import Services from './pages/Services';
-import Checkout from './pages/Checkout';
 import Support from './pages/Support';
 import Signup from './pages/Signup';
 import Login from './pages/Login';
 import About from './pages/About';
 import Home from './pages/Home';
 
+console.log(process.env.REACT_APP_STRIPE_PUBLISHABLE_KEY)
+
 const AppLayout = () => {
   const [user, setUser] = useState(null);
-
   // Gets the user information using Session and Cookie.
   useEffect(() => {
     const getUser = () => {
@@ -34,11 +35,10 @@ const AppLayout = () => {
     }
     getUser()
   }, [])
-
   return (
     <>
       <nav className="max-h-full flex w-2/12">
-        <Sidebar user={user} />
+        <Sidebar user={ user } />
       </nav>
       <div className="w-10/12">
         <TopBar />
@@ -85,5 +85,4 @@ function App() {
     </div>
   );
 }
-
 export default App;

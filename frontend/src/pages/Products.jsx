@@ -2,7 +2,7 @@ import ProductCard from "../components/Product";
 import { useEffect, useState } from "react";
 import Axios from 'axios';
 
-export default function Products() {
+export default function Products(props) {
   const [products, getProducts] = useState(null)
 
   useEffect(() => {

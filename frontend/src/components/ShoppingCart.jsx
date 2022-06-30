@@ -82,7 +82,7 @@ export default function ShoppingCart() {
                                     <p className="mt-1 text-sm text-gray-500">Item Tag</p>
                                   </div>
                                   <div className="flex flex-1 items-end justify-between text-sm">
-                                    <p className="text-gray-500">Qty "item.quantity"</p>
+                                    <p className="text-gray-500">Qty {cartItem.countInStock}</p>
 
                                     <div className="flex">
                                       <button

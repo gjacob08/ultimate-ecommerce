@@ -86,7 +86,7 @@ export default function Login() {
                 </div>
   
                 <div className="mt-6">
-                  <form action="#" method="POST" className="space-y-6">
+                  <form action="http://localhost:5000/api/users/login" method="POST" className="space-y-6">
                     <div>
                       <label htmlFor="email" className="block text-sm font-medium text-gray-700">
                         Email address
