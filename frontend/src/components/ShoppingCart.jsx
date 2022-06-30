@@ -1,8 +1,7 @@
-/* This example requires Tailwind CSS v2.0+ */
-import { Fragment } from 'react'
 import { Dialog, Transition } from '@headlessui/react'
 import { XIcon } from '@heroicons/react/outline'
 import { Link } from 'react-router-dom'
+import { Fragment } from 'react'
 
 import { useGlobal } from '../Global'
 
@@ -108,23 +107,13 @@ export default function ShoppingCart() {
                       </div>
                       <p className="mt-0.5 text-sm text-gray-500">Shipping and taxes calculated at checkout.</p>
                       <div className="mt-6">
-                        <Link to="/checkout-page"
+                        <Link
+                          onClick={ toggleCart }
+                          to="checkout-page"
                           className="flex items-center justify-center rounded-md border border-transparent bg-indigo-600 px-6 py-3 text-base font-medium text-white shadow-sm hover:bg-indigo-700"
                         >
                           Checkout
                         </Link>
-                      </div>
-                      <div className="mt-6 flex justify-center text-center text-sm text-gray-500">
-                        <p>
-                          or{' '}
-                          <button
-                            type="button"
-                            className="font-medium text-indigo-600 hover:text-indigo-500"
-                            onClick={toggleCart}
-                          >
-                            Continue Shopping<span aria-hidden="true"> &rarr;</span>
-                          </button>
-                        </p>
                       </div>
                     </div>
                   </div>

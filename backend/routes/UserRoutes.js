@@ -53,24 +53,6 @@ const proxyUsers = [
 const userRoute = express.Router();
 // console.log(mongoose.Types.ObjectId.isValid("62b32b8a5f040d635f819b28"));
 
-userRoute.get("/login/success", (req, res) => {
-    res.send( false ? proxyUsers[0] : proxyUsers[1] );
-    // if (req.user) {
-    //   res.status(200).json({
-    //     success: true,
-    //     message: "successfull",
-    //     user: req.user
-    //   });
-    // }
-    // else {
-    //   res.status(200).json({
-    //     success: true,
-    //     message: "successfull",
-    //     user: null
-    //   });
-    // }
-});
-
 // GET ALL USERS
 userRoute.get(
   "/",

@@ -8,7 +8,7 @@ export default function Products(props) {
   useEffect(() => {
     const getProductsEffect = () => {
       Axios.get("http://localhost:5000/api/products", { headers: { Accept: "application/json", "Content-Type": "application/json", "Access-Control-Allow-Credentials": true, }, withCredentials: true }) 
-        .then((resObject) => { console.log(resObject.data); getProducts(resObject.data) }) 
+        .then((resObject) => { getProducts(resObject.data) }) 
         .catch((err) => { console.log(err) })}
     getProductsEffect()
   }, [])

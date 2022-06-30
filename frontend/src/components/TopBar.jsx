@@ -1,49 +1,36 @@
+import PaymentSuccess from './PaymentSuccessModal'
 import { SearchIcon } from '@heroicons/react/solid'
 import { useGlobal } from '../Global'
 
-import { Fragment, useState } from 'react'
-import { Dialog, Menu, Transition } from '@headlessui/react'
-import {
-  BellIcon,
-  NewspaperIcon,
-  ChartBarIcon,
-  FolderIcon,
-  HomeIcon,
-  SupportIcon,
-  MenuAlt2Icon,
-  ShoppingCartIcon,
-  UsersIcon,
-  XIcon,
-} from '@heroicons/react/outline'
-
-<h2 className='text-white text-2xl mx-auto'>TechPlays</h2>
-
-const navigation = [
-  { name: 'Dashboard', href: '#', icon: HomeIcon, current: true },
-  { name: 'About', href: '#', icon: NewspaperIcon, current: false },
-  { name: 'Inventory', href: '/products', icon: FolderIcon, current: false },
-  { name: 'Services', href: '#', icon: UsersIcon, current: false },
-  { name: 'Support', href: '#', icon: SupportIcon, current: false },
-  { name: 'Sales Logistics', href: '#', icon: ChartBarIcon, current: false },
-]
-
-function classNames(...classes) {
-  return classes.filter(Boolean).join(' ')
-}
+import { useEffect } from 'react'
+import { ShoppingCartIcon } from '@heroicons/react/outline'
 
 export default function TopBar() {
   const toggleCart = useGlobal((state) => state.toggleCart)
-  const [sidebarOpen, setSidebarOpen] = useState(false)
+
+  const togglePaymentSuccessModal = useGlobal((state) => state.togglePaymentSuccessModal )
+  const emptyCart = useGlobal((state) => state.emptyCart )
+
+  const receipt = {
+    payment_intent: "",
+    payment_intent_client_secret: "",
+    redirect_status: "",
+  }
+
+  useEffect(() => {
+      receipt.payment_intent = window.location.search.split("&")[0].split("?")[1];
+      receipt.payment_intent_client_secret = window.location.search.split("&")[1];
+      receipt.redirect_status = window.location.search.split("=")[3];
+
+      if ( receipt.redirect_status === "succeeded" ) {
+          emptyCart()
+          togglePaymentSuccessModal(true)
+      }
+      else console.log(receipt) 
+  }, []);
 
   return (
     <div className="sticky top-0 z-10 flex-shrink-0 flex h-16 bg-white shadow">
-      <button
-        type="button"
-        className="px-4 border-r border-gray-200 text-gray-500 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-indigo-500 md:hidden"
-        onClick={() => setSidebarOpen(true)}>
-        <span className="sr-only">Open sidebar</span>
-        <MenuAlt2Icon className="h-6 w-6" aria-hidden="true" />
-      </button>
       <div className="flex-1 px-4 flex justify-between">
         <div className="flex-1 flex">
           <form className="w-full flex md:ml-0" action="#" method="GET">
@@ -70,6 +57,7 @@ export default function TopBar() {
             className="bg-white p-1 rounded-full text-gray-400 hover:text-gray-500"
           >
             <span className="sr-only">View notifications</span>
+            <PaymentSuccess />
             <ShoppingCartIcon className="h-6 w-6" aria-hidden="true" />
           </button>
         </div>
