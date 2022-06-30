@@ -1,4 +1,5 @@
 import { InboxIcon, SparklesIcon } from '@heroicons/react/outline'
+import PaymentSuccess from '../components/PaymentSuccessModal';
 
 export default function Home() {
     return (

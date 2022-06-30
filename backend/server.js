@@ -11,13 +11,39 @@ import cors from "cors";
 
 dotenv.config();
 connectDb();
+
+import Stripe from 'stripe';
+const stripe = new Stripe( process.env.STRIPE_SECRET_KEY );  
+
 const app = express();
 app.use(express.json());
 
 app.use( cors({ origin: "http://localhost:3000", methods: "GET,POST,PUT,DELETE", credentials: true, exposedHeaders: ['set-cookie'] }) );
 
 app.use(bodyParser.urlencoded({ extended: false }))
+app.use(express.static("public"));
 app.use(bodyParser.json())
+
+// CALCULATE TOTAL PRICE TO PAY
+const calculateOrderAmount = ( cartItems ) => {
+    return cartItems.reduce((total, item) => total = total + item.price, 0)*100;
+};
+
+// STRIPE API
+app.post("/create-payment-intent", async (req, res) => {
+    // Create a PaymentIntent with the order amount and currency
+    const paymentIntent = await stripe.paymentIntents.create({
+      amount: calculateOrderAmount( req.body.data ),
+      currency: "eur",
+      automatic_payment_methods: {
+        enabled: true,
+      },
+    });
+  
+    res.send({
+      clientSecret: paymentIntent.client_secret,
+    });
+});
 
 // API
 app.use("/api/import", ImportData);

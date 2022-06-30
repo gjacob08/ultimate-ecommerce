@@ -6,13 +6,16 @@ let global = (set) => ({
     cartOpen: false,
     importProductModalOpen: false,
     updateProductModalOpen: false,
+    paymentSuccessModalOpen: false,
     productUpdateId: "",
     toggleCart: () => set((state) => ({ cartOpen: !state.cartOpen })),
     toggleImportProductModal: () => set((state) => ({ importProductModalOpen: !state.importProductModalOpen })),
     toggleUpdateProductModal: () => set((state) => ({ updateProductModalOpen: !state.updateProductModalOpen })),
+    togglePaymentSuccessModal: (status) => set((state) => ({ paymentSuccessModalOpen: state.paymentSuccessModalOpen = status })),
     setProductUpdateId: (id) => set((state) => ({ productUpdateId: state.productUpdateId = id })),
     addItem: (item) => set((state) => ({ cartItems: [...state.cartItems, item] })),
-    removeItem: (item) => set((state) => ({ cartItems: state.cartItems.filter((cartItem) => cartItem._id !== item._id)} ))
+    removeItem: (item) => set((state) => ({ cartItems: state.cartItems.filter((cartItem) => cartItem._id !== item._id) })),
+    emptyCart: () => set((state) => ({ cartItems: state.cartItems = [] }))
 })
 
 global = devtools(global)
