@@ -80,7 +80,7 @@ userRoute.get(
   })
 );
 
-//LOGIN
+// LOGIN
 userRoute.post(
   "/login",
   asyncHandler(async (req, res) => {
@@ -117,7 +117,7 @@ userRoute.get(
   })
 );
 
-//PROFILE
+// PROFILE
 userRoute.get(
   "/profile/:id",
   protect,
@@ -139,7 +139,7 @@ userRoute.get(
   })
 );
 
-//UPDATE PROFILE
+// UPDATE PROFILE
 userRoute.put(
   "/profile/:id",
   protect,
@@ -169,7 +169,7 @@ userRoute.put(
   })
 );
 
-//REGISTER
+// REGISTER
 userRoute.post(
   "/",
   asyncHandler(async (req, res) => {

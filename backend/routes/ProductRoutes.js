@@ -6,7 +6,7 @@ const productRoute = express.Router()
 
 const FRONTEND_URL = "http://localhost:3000"
 
-// GET ALL PRODUCT
+// GET ALL PRODUCTS
 productRoute.get("/",  asyncHandler(
     async(req, res) => {
         const products = await Product.find()
@@ -14,7 +14,7 @@ productRoute.get("/",  asyncHandler(
     })
 );
 
-// GET SINGLE PRODUCT
+// GET A PRODUCT
 productRoute.get("/:id",  asyncHandler(
     async(req, res) => {
         const product = await Product.findById(req.params.id);
@@ -26,7 +26,7 @@ productRoute.get("/:id",  asyncHandler(
     })
 );
 
-// UPDATE A SINGLE PRODUCT
+// UPDATE A PRODUCT
 productRoute.post("/:id",  asyncHandler( async(req, res) => {
 
     // Log this request
@@ -40,9 +40,29 @@ productRoute.post("/:id",  asyncHandler( async(req, res) => {
 
     // Execute Update
     Product.findOneAndUpdate({ _id: productId }, { ...data, 'timestamps.modifiedOn': Date.now() }, { new: true })
-        .then( updatedTask => {
-            return res.redirect(FRONTEND_URL + "/inventory");
-        })
+        .then( updatedProduct => { return res.redirect(FRONTEND_URL + "/inventory") })
+        .catch( error => {
+            res.status(500).json({
+                'status': 'Error',
+                'message': 'Error in Database Operation!',
+                'error': error
+            })
+        });
+    })
+);
+
+// DELETE A PRODUCT
+productRoute.get("/delete/:id",  asyncHandler( async(req, res) => {
+
+    // Log this request
+    console.log( (new Date()).toISOString(), req.method, req.baseUrl );
+
+    // Get Product ID to Delete
+    const productId = req.params.id;
+
+    // Execute Update
+    Product.findOneAndDelete({ _id: productId })
+        .then( deletedProduct => { return res.redirect(FRONTEND_URL + "/inventory") })
         .catch( error => {
             res.status(500).json({
                 'status': 'Error',

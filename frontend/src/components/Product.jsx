@@ -12,9 +12,6 @@ const ProductCard = ({ product }) => {
             <p>{"$" + product.price }</p>
         </div>
         <p className="px-4 mt-2 mb-4 text-sm italic text-gray-500">{ product.description }</p>
-        {/* <div className="flex justify-center">
-            <button className="my-4 py-2 px-8 shadow-md rounded-lg bg-green-600 text-white font-bold hover:bg-green-400">Add to cart</button>
-        </div> */}
         </Link>
     );
   };
