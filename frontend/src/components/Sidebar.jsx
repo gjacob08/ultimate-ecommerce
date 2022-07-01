@@ -61,7 +61,7 @@ export default function Sidebar({ user }) {
         <h2 className='hidden lg:flex text-white text-2xl mx-auto'>TechPlay</h2>
         </div>
         <nav className="mt-5 flex-1 px-2 bg-gray-800 space-y-1" aria-label="Sidebar">
-          {navigation.map((item) => (
+          {navigation?.map((item) => (
             <NavLink to={item.href} key={item.name}
               className={({ isActive }) => classNames(
                   isActive ? 'bg-gray-900 text-white' : 'text-gray-300 hover:bg-gray-700 hover:text-white',
@@ -111,7 +111,7 @@ export default function Sidebar({ user }) {
                 leaveTo="transform opacity-0 scale-95"
               >
                 <Menu.Items className="origin-bottom-left absolute left-0 bottom-10 mt-2 w-48 rounded-md shadow-lg py-1 bg-white ring-1 ring-black ring-opacity-5 focus:outline-none">
-                  {userNavigation.map((item) => (
+                  {userNavigation?.map((item) => (
                     <Menu.Item key={item.name}>
                       {({ active }) => (
                         <a

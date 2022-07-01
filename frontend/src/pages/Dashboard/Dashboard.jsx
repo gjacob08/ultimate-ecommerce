@@ -21,7 +21,7 @@ export default function Dashboard() {
   useEffect(() => {
     const getOrdersEffect = () => {
       axios.get("http://localhost:5000/api/orders", { headers: { Accept: "application/json", "Content-Type": "application/json", "Access-Control-Allow-Credentials": true, }, withCredentials: true }) 
-        .then((resObject) => { console.log(resObject.data); getOrders(resObject.data) }) 
+        .then((resObject) => {  getOrders(resObject.data) }) 
         .catch((err) => { console.log(err) })}
     getOrdersEffect()
   }, [])
