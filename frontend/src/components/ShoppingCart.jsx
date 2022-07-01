@@ -5,7 +5,7 @@ import { Fragment } from 'react'
 
 import { useGlobal } from '../Global'
 
-export default function ShoppingCart() {
+export default function ShoppingCart({ user }) {
   const toggleCart = useGlobal((state) => state.toggleCart)
 
   const removeItem = useGlobal((state) => state.removeItem)
@@ -77,12 +77,13 @@ export default function ShoppingCart() {
                                       <h3>
                                         <a href={ cartItem.href }> { cartItem.name } </a>
                                       </h3>
-                                      <p className="ml-4">{ "$" + cartItem.price }</p>
+                                      <p className="ml-4">{ "$" + cartItem.price*cartItem.quantity }</p>
                                     </div>
-                                    <p className="mt-1 text-sm text-gray-500">Item Tag</p>
+                                    <p className="mt-1 text-sm text-gray-500">{ cartItem.category }</p>
+                                    <p className="mt-1 text-sm text-gray-500">Unit Price: ${ cartItem.price }</p>
                                   </div>
                                   <div className="flex flex-1 items-end justify-between text-sm">
-                                    <p className="text-gray-500">Qty {cartItem.countInStock}</p>
+                                    <p className="text-gray-500">Qty { cartItem.quantity }</p>
 
                                     <div className="flex">
                                       <button
@@ -103,17 +104,17 @@ export default function ShoppingCart() {
                     <div className="border-t border-gray-200 py-6 px-4 sm:px-6">
                       <div className="flex justify-between text-base font-medium text-gray-900">
                         <p>Subtotal</p>
-                        <p>{"$" + cartItems.reduce((total, item) => total = total + item.price, 0)}</p>
+                        <p>{"$" + cartItems.reduce((total, item) => total = total + item.price*item.quantity, 0)}</p>
                       </div>
                       <p className="mt-0.5 text-sm text-gray-500">Shipping and taxes calculated at checkout.</p>
-                      <div className="mt-6">
-                        <Link
-                          onClick={ toggleCart }
-                          to="checkout-page"
-                          className="flex items-center justify-center rounded-md border border-transparent bg-indigo-600 px-6 py-3 text-base font-medium text-white shadow-sm hover:bg-indigo-700"
-                        >
-                          Checkout
-                        </Link>
+                      <div className="mt-6 flex justify-center w-full">
+                        { cartItems.length === 0 ? 
+                        (<button type="button" className="flex w-full items-center justify-center rounded-md border border-transparent bg-indigo-600 px-6 py-3 text-base font-medium text-white shadow-sm hover:bg-indigo-700" disabled>Checkout</button>) : 
+                        ( user ? (<Link onClick={ toggleCart } to="checkout-page"
+                          className="flex w-full items-center justify-center rounded-md border border-transparent bg-indigo-600 px-6 py-3 text-base font-medium text-white shadow-sm hover:bg-indigo-700">
+                          Checkout</Link>) : (<Link to="login"
+                          className="flex w-full items-center justify-center rounded-md border border-transparent bg-indigo-600 px-6 py-3 text-base font-medium text-white shadow-sm hover:bg-indigo-700">
+                          Checkout</Link>)  ) }
                       </div>
                     </div>
                   </div>

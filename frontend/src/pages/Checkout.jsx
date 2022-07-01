@@ -9,12 +9,12 @@ import { useGlobal } from '../Global'
 
 const stripePromise = loadStripe(process.env.REACT_APP_STRIPE_PUBLISHABLE_KEY)
 
-export default function Checkout() {
+export default function Checkout({ user }) {
     const cartItems = useGlobal((state) => state.cartItems )
     const [clientSecret, setClientSecret] = useState("");
 
     useEffect(() => {
-        Axios.post("http://localhost:5000/create-payment-intent", { headers: { Accept: "application/json", "Content-Type": "application/json", "Access-Control-Allow-Credentials": true, }, data: cartItems, withCredentials: true })
+        Axios.post("http://localhost:5000/create-payment-intent", { headers: { Accept: "application/json", "Content-Type": "application/json", "Access-Control-Allow-Credentials": true, }, data: { cartItems }, withCredentials: true })
             .then((res) => setClientSecret(res.data.clientSecret)) 
             .catch((err) => { console.log(err) })
     }, []);
@@ -69,9 +69,9 @@ export default function Checkout() {
                                 <div className="flex-auto space-y-1">
                                     <h3 className="text-white">{product.name}</h3>
                                     <p>{product.category}</p>
-                                    <p>Quantity: 1</p>
+                                    <p>{product.quantity}</p>
                                 </div>
-                                <p className="flex-none text-base font-medium text-white">{"$" + product.price}</p>
+                                <p className="flex-none text-base font-medium text-white">{"$" + product.price*product.quantity}</p>
                             </li>
                         ))}
                     </ul>
@@ -79,12 +79,12 @@ export default function Checkout() {
                     <dl className="text-sm font-medium space-y-6 border-t border-white border-opacity-10 pt-6">
                         <div className="flex items-center justify-between">
                             <dt>Subtotal</dt>
-                            <dd>{"$" + cartItems.reduce((total, item) => total = total + item.price, 0)}</dd>
+                            <dd>{"$" + cartItems.reduce((total, item) => total = total + item.price*item.quantity, 0)}</dd>
                         </div>
 
                         <div className="flex items-center justify-between">
                             <dt>Shipping</dt>
-                            <dd>{"$" + (cartItems.reduce((total, item) => total = total + item.price, 0) * 0.08)}</dd>
+                            <dd>{"$" + (cartItems.reduce((total, item) => total = total + item.price*item.quantity, 0) * 0.01)}</dd>
                         </div>
 
                         {/* <div className="flex items-center justify-between">
@@ -95,8 +95,8 @@ export default function Checkout() {
                         <div className="flex items-center justify-between border-t border-white border-opacity-10 text-white pt-6">
                             <dt className="text-base">Total</dt>
                             <dd className="text-base">{"$" +
-                                (cartItems.reduce((total, item) => total = total + item.price, 0) +
-                                    (cartItems.reduce((total, item) => total = total + item.price, 0) * 0.08))}
+                                (cartItems.reduce((total, item) => total = total + item.price*item.quantity, 0) +
+                                    (cartItems.reduce((total, item) => total = total + item.price*item.quantity, 0) * 0.01))}
                             </dd>
                         </div>
                     </dl>

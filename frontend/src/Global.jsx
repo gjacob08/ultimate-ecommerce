@@ -2,12 +2,14 @@ import create from "zustand"
 import { devtools, persist } from 'zustand/middleware'
 
 let global = (set) => ({
+    userToken: null,
     cartItems: [],
     cartOpen: false,
     importProductModalOpen: false,
     updateProductModalOpen: false,
     paymentSuccessModalOpen: false,
     productUpdateId: "",
+    setUserToken: (token) => set((state) => ({ userToken: state.userToken = token })),
     toggleCart: () => set((state) => ({ cartOpen: !state.cartOpen })),
     toggleImportProductModal: () => set((state) => ({ importProductModalOpen: !state.importProductModalOpen })),
     toggleUpdateProductModal: () => set((state) => ({ updateProductModalOpen: !state.updateProductModalOpen })),
