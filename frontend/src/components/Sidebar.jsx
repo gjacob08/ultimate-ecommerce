@@ -2,6 +2,7 @@ import { Menu, Transition } from '@headlessui/react'
 import { Link, NavLink } from 'react-router-dom'
 import Logo from "../assets/images/logo2.jpg"
 import { Fragment } from 'react'
+import { useGlobal } from '../Global'
 
 import {
   NewspaperIcon,
@@ -46,6 +47,14 @@ function classNames(...classes) {
 }
 
 export default function Sidebar({ user }) {
+  const setUserToken = useGlobal((state) => state.setUserToken)
+
+  const logoutHandler = async (e) => {
+    e.preventDefault();
+
+    setUserToken(null)
+    window.location = "/"
+  }
 
   ( user ? ( user.role === "admin" ? (navigation = adminNavigation) : (navigation = customerNavigation)) : (navigation = customerNavigation))
   
@@ -56,8 +65,7 @@ export default function Sidebar({ user }) {
           <img
             className="h-10 w-auto"
             src={ Logo }
-            alt="TechPlay"
-          />
+            alt="TechPlay"/>
         <h2 className='hidden lg:flex text-white text-2xl mx-auto'>TechPlay</h2>
         </div>
         <nav className="mt-5 flex-1 px-2 bg-gray-800 space-y-1" aria-label="Sidebar">
@@ -93,12 +101,26 @@ export default function Sidebar({ user }) {
       {/* Profile Section */}
       <div className="flex-shrink-0 flex bg-gray-700 p-4">
         <a href="#" className="flex-shrink-0 w-full group block">
-          { user ? (<div className="flex items-center">
+          { user ? (<div className="flex items-center justify-center">
             <Menu as="div" className="ml-3 relative">
               <div>
-                <Menu.Button className="max-w-xs bg-white flex items-center text-sm rounded-full focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
-                  <span className="sr-only">Open user menu</span>
-                  <img className="inline-block h-9 w-9 rounded-full" src={ user.photo } alt={ user.name } />
+                <Menu.Button className="max-w-xs flex w-full items-center text-sm rounded-full">
+                  
+                    <span className="sr-only">Open user menu</span>
+                    { user.photo ? (
+                    <div className="w-full flex">
+                      <img className="inline-block h-9 w-9 rounded-full" src={ user.photo } alt={ user.name } />
+                      <div className='ml-4 mr-8'>
+                        <p className="text-sm font-medium text-white">{ user.name.firstName }</p>
+                        <p className="text-xs font-medium text-gray-300 group-hover:text-gray-200">View profile</p>
+                      </div>
+                    </div>) : 
+                    (
+                    <div className="w-full mr-3">
+                      <p className="text-sm font-medium text-white">{ user.name.firstName }</p>
+                      <p className="text-xs font-medium text-gray-300 group-hover:text-gray-200">View profile</p>
+                    </div>) }
+                  
                 </Menu.Button>
               </div>
               <Transition
@@ -110,29 +132,22 @@ export default function Sidebar({ user }) {
                 leaveFrom="transform opacity-100 scale-100"
                 leaveTo="transform opacity-0 scale-95"
               >
-                <Menu.Items className="origin-bottom-left absolute left-0 bottom-10 mt-2 w-48 rounded-md shadow-lg py-1 bg-white ring-1 ring-black ring-opacity-5 focus:outline-none">
+                <Menu.Items className="origin-bottom-left w-full absolute left-0 bottom-10 mt-2 w-48 rounded-md shadow-lg py-1 bg-white ring-1 ring-black ring-opacity-5 focus:outline-none">
                   {userNavigation.map((item) => (
                     <Menu.Item key={item.name}>
                       {({ active }) => (
-                        <a
-                          href={item.href}
-                          className={classNames(
-                            active ? 'bg-gray-100' : '',
-                            'block px-4 py-2 text-sm text-gray-700'
-                          )}
-                        >
+                        <button onClick={logoutHandler} className={classNames(
+                            active ? 'bg-gray-100 w-full' : '',
+                            'block px-4 py-2 text-sm text-gray-700 w-full'
+                          )}>
                           {item.name}
-                        </a>
+                        </button>
                       )}
                     </Menu.Item>
                   ))}
                 </Menu.Items>
               </Transition>
             </Menu>
-            <div className="ml-3">
-              <p className="text-sm font-medium text-white">{ user.name }</p>
-              <p className="text-xs font-medium text-gray-300 group-hover:text-gray-200">View profile</p>
-            </div>
           </div>) : (<Link to="login"><div className='text-white text-center'>Log In</div></ Link>) }
         </a>
       </div>

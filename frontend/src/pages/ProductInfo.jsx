@@ -7,10 +7,18 @@ import { useGlobal } from '../Global';
 export default function ProductInfo() {
 
     const addItem = useGlobal((state) => state.addItem)
-    const add = () => { addItem(productInfo) }
-
+    const add = () => { 
+        if ( quantity <= 0 ) setQuantity(1)
+        // if ( cartItems.includes( productInfo._id ) ) productInfo.quantity = productInfo.quantity + quantity
+        else productInfo.quantity = quantity
+        
+        addItem( productInfo ) 
+    }
+    
     let { productId } = useParams();
+    let [quantity, setQuantity] = useState(1);
     const [productInfo, setProductInfo] = useState(null);
+    // const cartItems = useGlobal((state) => state.cartItems)
 
     useEffect(() => {
         const getProductInfoEffect = () => {
@@ -51,6 +59,10 @@ export default function ProductInfo() {
 
                                         <div className="prose prose-sm text-gray-500"
                                             dangerouslySetInnerHTML={{ __html: productInfo.description }} />
+                                    </div>
+                                    <div className='mt-4 flex items-center'>
+                                        <label htmlFor="qty">Quantity:</label>
+                                        <input className="ml-2 rounded-lg w-2/12" onChange={(i) => { setQuantity(i.target.value) }} type="text" name="quantity" defaultValue={1} id="quantity" />
                                     </div>
                                     <Link
                                         onClick={ add }

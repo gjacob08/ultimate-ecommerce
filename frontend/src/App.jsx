@@ -10,7 +10,7 @@ import TopBar from './components/TopBar';
 
 // REACT IMPORTED PAGES
 import ProductInfo from './pages/ProductInfo';
-import Dashboard from './pages/Dashboard/Dashboard';
+import Dashboard from './pages/Dashboard';
 import Inventory from './pages/Inventory';
 import Logistics from './pages/Logistics';
 import Checkout from './pages/Checkout';
@@ -22,28 +22,34 @@ import Login from './pages/Login';
 import About from './pages/About';
 import Home from './pages/Home';
 
-console.log(process.env.REACT_APP_STRIPE_PUBLISHABLE_KEY)
+import { useGlobal } from "./Global";
 
 const AppLayout = () => {
   const [user, setUser] = useState(null);
+  const userToken = useGlobal((state) => state.userToken)
+
   // Gets the user information using Session and Cookie.
   useEffect(() => {
     const getUser = () => {
-      Axios.get("http://localhost:5000/api/users/login/success", { headers: { Accept: "application/json", "Content-Type": "application/json", "Access-Control-Allow-Credentials": true, }, withCredentials: true })
-        .then((resObject) => { setUser(resObject.data) })
-        .catch((err) => { console.log(err) })
+      if ( userToken === null ) return
+      else {
+        Axios.get("http://localhost:5000/api/users/login/success", { headers: { Authorization: `Bearer ${userToken}`, Accept: "application/json", "Content-Type": "application/json", "Access-Control-Allow-Credentials": true, }, withCredentials: true })
+                .then((resObject) => { setUser(resObject.data) })
+                .catch((err) => { console.log(err) })
+      }
     }
     getUser()
   }, [])
+
   return (
     <>
       <nav className="max-h-full flex w-2/12">
         <Sidebar user={ user } />
       </nav>
       <div className="w-10/12">
-        <TopBar />
+        <TopBar user={ user }/>
         <Outlet />
-        <ShoppingCart />
+        <ShoppingCart user={ user } />
       </div>
     </>
   );
@@ -51,11 +57,12 @@ const AppLayout = () => {
 
 function App() {
   const [user, setUser] = useState(null);
+  const userToken = useGlobal((state) => state.userToken)
 
   // Gets the user information using Session and Cookie.
   useEffect(() => {
     const getUser = () => {
-      Axios.get("http://localhost:5000/api/users/login/success", { headers: { Accept: "application/json", "Content-Type": "application/json", "Access-Control-Allow-Credentials": true, }, withCredentials: true })
+      Axios.get("http://localhost:5000/api/users/login/success", { headers: { Authorization: `Bearer ${userToken}`, Accept: "application/json", "Content-Type": "application/json", "Access-Control-Allow-Credentials": true, }, withCredentials: true })
         .then((resObject) => { setUser(resObject.data) })
         .catch((err) => { console.log(err) })
     }
@@ -80,7 +87,7 @@ function App() {
         {/* Makes Sure that Accounts cannot log in or Sign Up while they are Logged In */}
         <Route path="/login" element={user ? <Navigate to="/" /> : <Login />} />
         <Route path="/signup" element={user ? <Navigate to="/" /> : <Signup />} />
-        <Route path="/checkout-page" element={<Checkout />} />
+        <Route path="/checkout-page" element={user ? <Checkout user={ user } /> : <Checkout />} />
       </Routes>
     </div>
   );

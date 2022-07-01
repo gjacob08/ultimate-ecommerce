@@ -1,6 +1,25 @@
 import Logo from "../assets/images/logo.jpg"
+import { useState } from "react"
+import Axios from "axios"
+
+import { useGlobal } from "../Global"
 
 export default function Signup() {
+    const [firstName, setFirstName] = useState(null)
+    const [lastName, setLastName] = useState(null)
+    const [email, setEmail] = useState(null)
+    const [password, setPassword] = useState(null)
+
+    const setUserToken = useGlobal((state) => state.setUserToken)
+
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+
+        Axios.post("http://localhost:5000/api/import/user", { headers: { Accept: "application/json", "Content-Type": "application/json", "Access-Control-Allow-Credentials": true, }, data: { firstName, lastName, email, password }, withCredentials: true })
+        .then((res) => {setUserToken(res.data.token); window.location = "/"}) 
+        .catch((err) => { console.log(err) })
+    }
+    
     return (
         <>
             <div className="bg-gray-200 w-full h-screen min-h-full flex flex-col py-12 sm:px-6 lg:px-8">
@@ -14,7 +33,6 @@ export default function Signup() {
                 </div>
 
                 <div className="mx-auto mt-4 w-max bg-white py-8 px-4 shadow sm:rounded-xl sm:px-10">
-                    <form className="space-y-6" action="http://localhost:5000/api/import/user" method="POST">
                         <div className="block sm:flex">
                             <div className="mr-8 w-1/2">
                                 <div>
@@ -23,6 +41,7 @@ export default function Signup() {
                                     </label>
                                     <div className="mt-1">
                                         <input
+                                            onChange={i => setFirstName(i.target.value)}
                                             id="firstname"
                                             name="name.firstName"
                                             type="text"
@@ -37,6 +56,7 @@ export default function Signup() {
                                     </label>
                                     <div className="mt-1">
                                         <input
+                                            onChange={i => setLastName(i.target.value)}
                                             id="lastname"
                                             name="name.lastName"
                                             type="text"
@@ -54,6 +74,7 @@ export default function Signup() {
                                     </label>
                                     <div className="mt-1">
                                         <input
+                                            onChange={i => setEmail(i.target.value)}
                                             id="email"
                                             name="email"
                                             type="email"
@@ -69,6 +90,7 @@ export default function Signup() {
                                     </label>
                                     <div className="mt-1">
                                         <input
+                                            onChange={i => setPassword(i.target.value)}
                                             id="password"
                                             name="password"
                                             type="password"
@@ -82,12 +104,12 @@ export default function Signup() {
                         </div>
                         <div>
                             <button
+                                onClick={handleSubmit}
                                 type="submit"
-                                className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                                className="mt-4 w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
                                 Submit
                             </button>
                         </div>
-                    </form>
                 </div>
             </div>
         </>
