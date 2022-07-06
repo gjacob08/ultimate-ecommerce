@@ -13,7 +13,7 @@ import cors from "cors";
 dotenv.config();
 connectDb();
 
-const stripe = new Stripe( process.env.STRIPE_SECRET_KEY );  
+const stripe = new Stripe( process.env.STRIPE_SECRET_KEY );
 
 const app = express();
 
@@ -25,8 +25,11 @@ app.use(bodyParser.json())
 
 // CALCULATE TOTAL PRICE TO PAY
 const calculateOrderAmount = ( cartItems ) => {
-    return (cartItems.reduce((total, item) => total = total + item.price*item.quantity, 0)+
-    (cartItems.reduce((total, item) => total = total + item.price*item.quantity, 0) * 0.01))*100;
+    const FEE_RATIO = 0.01
+    const SUB_TOTAL = cartItems.reduce((total, item) => total = total + item.price*item.quantity, 0)
+    const SHIPPING_FEE = SUB_TOTAL * FEE_RATIO
+
+    return parseFloat((( SUB_TOTAL + SHIPPING_FEE ) * 100 ).toFixed(2));
 };
 
 // STRIPE API
@@ -37,8 +40,11 @@ app.post("/create-payment-intent", async (req, res) => {
       currency: "eur",
       automatic_payment_methods: {
         enabled: true,
-      },
-    });
+      }} 
+    //   , {
+    //   idempotencyKey: req.body.data.cartItems[0]._id
+    // }
+    );
   
     res.send({
       clientSecret: paymentIntent.client_secret,

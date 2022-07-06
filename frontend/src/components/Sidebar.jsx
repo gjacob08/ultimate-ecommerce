@@ -34,13 +34,7 @@ const customerNavigation = [
   { name: 'Support', href: 'support', icon: SupportIcon},
 ]
 
-const userNavigation = [
-  { name: 'Your Profile', href: '#' },
-  { name: 'Settings', href: '#' },
-  { name: 'Sign out', href: '#' },
-]
-
-let navigation = []
+let navigation = [] 
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(' ')
@@ -55,9 +49,15 @@ export default function Sidebar({ user }) {
     setUserToken(null)
     window.location = "/"
   }
-
-  ( user ? ( user.role === "admin" ? (navigation = adminNavigation) : (navigation = customerNavigation)) : (navigation = customerNavigation))
   
+  const userNavigation = [
+    { name: 'Your Profile', href: '/services' },
+    { name: 'Settings', href: '/support' },
+    { name: 'Sign out', href: logoutHandler },
+  ]
+  
+  user ? user.role === "admin" ? (navigation = adminNavigation) : (navigation = customerNavigation) : (navigation = customerNavigation);
+
   return (
     <div className="sticky top-0 h-screen flex-1 flex flex-col min-h-0 bg-gray-800">
       <div className="flex-1 flex flex-col pt-5 pb-4 overflow-y-auto">
@@ -100,7 +100,6 @@ export default function Sidebar({ user }) {
       
       {/* Profile Section */}
       <div className="flex-shrink-0 flex bg-gray-700 p-4">
-        <a href="#" className="flex-shrink-0 w-full group block">
           { user ? (<div className="flex items-center justify-center">
             <Menu as="div" className="ml-3 relative">
               <div>
@@ -134,25 +133,24 @@ export default function Sidebar({ user }) {
               >
                 <Menu.Items className="origin-bottom-left w-full absolute left-0 bottom-10 mt-2 w-48 rounded-md shadow-lg py-1 bg-white ring-1 ring-black ring-opacity-5 focus:outline-none">
                   {userNavigation.map((item) => (
-                    <Menu.Item key={item.name}>
-                      {({ active }) => (
-                        <button onClick={logoutHandler} className={classNames(
-                            active ? 'bg-gray-100 w-full' : '',
-                            'block px-4 py-2 text-sm text-gray-700 w-full'
-                          )}>
-                          {item.name}
-                        </button>
-                      )}
-                    </Menu.Item>
+                    <a key={item.name} href={item.href} className="flex-shrink-0 w-full group block">
+                      <Menu.Item key={item.name}>
+                        {({ active }) => (
+                          <button onClick={item.href} className={classNames(
+                              active ? 'bg-gray-100 w-full' : '',
+                              'block px-4 py-2 text-sm text-gray-700 w-full'
+                            )}>
+                            {item.name}
+                          </button>
+                        )}
+                      </Menu.Item>
+                    </a>
                   ))}
                 </Menu.Items>
               </Transition>
             </Menu>
-          </div>) : (<Link to="login"><div className='text-white text-center'>Log In</div></ Link>) }
-        </a>
+          </div>) : (<Link to="login" className='mx-auto'><div className='text-white text-center'>Log In</div></ Link>) }
       </div>
-
-      
     </div>
   )
 }

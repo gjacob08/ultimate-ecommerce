@@ -40,8 +40,7 @@ userRoute.post( "/login", asyncHandler(async (req, res) => {
         createdAt: user.createdAt,
       });
     } else {
-      res.status(401);
-      throw new Error("Invalid Email or Password");
+      res.status(401).send("Invalid Email or Password");
     }
   })
 );

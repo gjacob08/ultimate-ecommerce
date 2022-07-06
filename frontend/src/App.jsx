@@ -31,7 +31,7 @@ const AppLayout = () => {
   // Gets the user information using Session and Cookie.
   useEffect(() => {
     const getUser = () => {
-      if ( userToken === null ) return
+      if ( userToken == null ) return
       else {
         Axios.get("http://localhost:5000/api/users/login/success", { headers: { Authorization: `Bearer ${userToken}`, Accept: "application/json", "Content-Type": "application/json", "Access-Control-Allow-Credentials": true, }, withCredentials: true })
                 .then((resObject) => { setUser(resObject.data) })
@@ -76,7 +76,7 @@ function App() {
           <Route path="/" element={<Home />} />
           <Route path="/products" element={<Products />} />
           <Route path="/products/:productId" element={<ProductInfo />} />
-          <Route path="/services" element={<Services />} />
+          <Route path="/services" element={<Services user={ user } />} />
           <Route path="/support" element={<Support />} />
           <Route path="/about" element={<About />} />
           {/* Makes Sure that Customer Accounts don't have access to Admin Pages. */}

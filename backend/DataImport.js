@@ -14,12 +14,11 @@ ImportData.post("/user", asyncHandler(async (req, res) => {
   console.log((new Date()).toISOString(), req.method, req.baseUrl)
 
   const { firstName, lastName, email, password } = req.body.data;
-  console.log(req.body.data)
 
   // Searches the Database for Existing Account
   User.findOne({ 'email': req.body.data.email.toLowerCase() }, async function (error, user) {
     if (error) return res.send(error)
-    if (user) return res.send("User Already Exists")
+    if (user) return res.status(400).send("Email Address already exists.")
 
     // Creates a new User base on the request body
     else {
