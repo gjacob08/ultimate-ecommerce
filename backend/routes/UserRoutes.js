@@ -3,56 +3,13 @@ import asyncHandler from "express-async-handler";
 import protect from "../Middleware/AuthMiddleware.js";
 import User from "../models/UserModel.js";
 import generateToken from "../utils/generateToken.js";
-import mongoose from "mongoose";
-
-const proxyUsers = [
-  {
-    _id: {
-      $oid: "62b1a12973881ec6f1708b8c",
-    },
-    name: "Wesuli",
-    email: "wesleymelencion@gmail.com",
-    password: "$2a$10$7OW5Wh88IfWl3Wz36k2UjeYeiKr1LM3VI6s1uN.qCOn9YQngAdst2",
-    photo: "https://avatars.githubusercontent.com/u/57067888?v=4",
-    role: "customer",
-    __v: 0,
-    createdAt: {
-      $date: {
-        $numberLong: "1655808297986",
-      },
-    },
-    updatedAt: {
-      $date: {
-        $numberLong: "1655808297986",
-      },
-    },
-  },
-  {
-    _id: {
-      $oid: "62b1a12973881ec6f1708b8d",
-    },
-    name: "Francis",
-    email: "francisaquino@gmail.com",
-    password: "$2a$10$DIf0c4jCA0JdKmcGiI8kQ.mAGS5Z9Nu.PfYdqA4SS1XfZ2B.cI.GW",
-    photo:
-      "https://s3.eu-west-2.amazonaws.com/img.creativepool.com/files/profileimage/91/40/91400b32540f88410f1ce1f67fdb8527_full.jpg",
-    role: "admin",
-    __v: 0,
-    createdAt: {
-      $date: {
-        $numberLong: "1655808297987",
-      },
-    },
-    updatedAt: {
-      $date: {
-        $numberLong: "1655808297987",
-      },
-    },
-  },
-];
 
 const userRoute = express.Router();
-// console.log(mongoose.Types.ObjectId.isValid("62b32b8a5f040d635f819b28"));
+
+// SUCCESSFUL LOGIN GIVES BACK THE USER DATA
+userRoute.get("/login/success", protect, asyncHandler(async (req, res) => {
+    res.send( req.user );
+}));
 
 userRoute.get("/login/success", (req, res) => {
   res.send(false ? proxyUsers[0] : proxyUsers[1]);
@@ -61,6 +18,7 @@ userRoute.get("/login/success", (req, res) => {
 // GET ALL USERS
 userRoute.get(
   "/",
+  protect,
   asyncHandler(async (req, res) => {
     const users = await User.find({});
     res.json(users);
@@ -68,10 +26,12 @@ userRoute.get(
 );
 
 // LOGIN
-userRoute.post(
-  "/login",
-  asyncHandler(async (req, res) => {
-    const { email, password } = req.body;
+userRoute.post( "/login", asyncHandler(async (req, res) => {
+
+    // Log this request
+    console.log( ( new Date() ).toISOString(), req.method, req.baseUrl )
+
+    const { email, password } = req.body.data;
     const user = await User.findOne({ email });
 
     if (user && (await user.matchPassword(password))) {
@@ -116,6 +76,7 @@ userRoute.get(
         _id: user._id,
         name: user.name,
         email: user.email,
+        photo: user.photo,
         role: user.role,
         createdAt: user.createdAt,
       });
@@ -127,16 +88,20 @@ userRoute.get(
 );
 
 // UPDATE PROFILE
-userRoute.put(
+userRoute.post(
   "/profile/:id",
-  protect,
+  // protect,
   asyncHandler(async (req, res) => {
-    const user = await User.findByIdAndUpdate(req.user._id);
+    const user = await User.findByIdAndUpdate(req.params.id);
+    console.log(req.body.data)
 
     if (user) {
-      user.name = req.body.name || user.name;
-      user.email = req.body.email || user.email;
-      user.role = req.body.role || user.role;
+      user.name.firstName = req.body.data.name.firstName || user.name.firstName;
+      user.name.lastName = req.body.data.name.lastName || user.name.lastName;
+      user.email = req.body.data.email || user.email;
+      user.photo = req.body.data.photo || user.photo;
+      user.role = req.body.data.role.toLowerCase() || user.role;
+      
       if (req.body.password) {
         user.password = req.body.password || user.password;
       }
@@ -145,6 +110,7 @@ userRoute.put(
         _id: updatedUser._id,
         name: updatedUser.name,
         email: updatedUser.email,
+        photo: updatedUser.photo,
         role: updatedUser.role,
         createdAt: updatedUser.createdAt,
         token: generateToken(updatedUser._id),
@@ -178,6 +144,7 @@ userRoute.post(
         _id: user._id,
         name: user.name,
         email: user.email,
+        photo: user.photo,
         role: user.role,
         token: generateToken(user._id),
       });
@@ -187,35 +154,5 @@ userRoute.post(
     }
   })
 );
-
-//UPDATE PROFILE
-// userRoute.put( "/profile/:id", asyncHandler(async (req, res) => {
-
-//     // Get Task Id to modify
-//     const id = req.params.id;
-
-//     // Get Data to be modified
-//     const data = req.body;
-
-//     // Execute Update
-//     User.findOneAndUpdate({ _id: id }, { ...data }, { new: true })
-//     .then( updatedUser => { res.json({ user: updatedUser }) })
-//     .catch( error => {
-//         res.status(500).json({
-//             'status': 'Error 123',
-//             'message': 'Error in Database Operation!',
-//             'error': error
-//         })
-//     });
-//   })
-// );
-
-// userRoute.post(
-//   "/profile",
-//   protect,
-//   asyncHandler(async (req, res) => {
-//     res.send("User Profile");
-//   })
-// );
 
 export default userRoute;

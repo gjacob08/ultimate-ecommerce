@@ -3,39 +3,29 @@ import mongoose from "mongoose";
 const orderSchema = mongoose.Schema(
   {
     user: {
-      type: mongoose.Schema.Types.ObjectId,
-      required: true,
-      ref: "User",
+      id: { type: mongoose.Schema.Types.ObjectId, required: true, ref: "User" },
+      name: { type: String, required: true },
+      email: { type: String, required: true },
+      phone: { type: Number, required: true },
     },
-    orderItems: [
-      {
-        name: { type: String, required: true },
-        qty: { type: Number, required: true },
-        image: { type: String, required: true },
-        price: { type: Number, required: true },
-        // product: {
-        //   type: mongoose.Schema.Types.ObjectId,
-        //   required: true,
-        //   ref: "Product",
-        // },
-      },
-    ],
+    receipt: {
+      payment_intent: { type: String, required: true },
+      payment_intent_client_secret: { type: String, required: true },
+      redirect_status: { type: String, required: true },
+    },
+    orderItems: [],
     shippingAddress: {
-      address: { type: String, required: true },
+      line1: { type: String, required: true },
+      line2: { type: String, required: true },
       city: { type: String, required: true },
-      postalCode: { type: String, required: true },
+      postal: { type: String, required: true },
+      state: { type: String, required: true },
       country: { type: String, required: true },
     },
     paymentMethod: {
       type: String,
       required: true,
-      default: "Paypal",
-    },
-    paymentResult: {
-      id: { type: String },
-      status: { type: String },
-      update_time: { type: String },
-      email_address: { type: String },
+      default: "Stripe",
     },
     shippingPrice: {
       type: Number,

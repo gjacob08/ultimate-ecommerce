@@ -10,7 +10,7 @@ import TopBar from "./components/TopBar";
 
 // REACT IMPORTED PAGES
 import ProductInfo from "./pages/ProductInfo";
-import Dashboard from "./pages/Dashboard/Dashboard";
+import Dashboard from "./pages/Dashboard";
 import Inventory from "./pages/Inventory";
 import Logistics from "./pages/Logistics";
 import Checkout from "./pages/Checkout";
@@ -21,42 +21,49 @@ import Signup from "./pages/Signup";
 import Login from "./pages/Login";
 import About from "./pages/About";
 import Home from "./pages/Home";
+import Settings from "./pages/Settings/Settings";
 
-// const token = process.env.JWT_SECRET;
+import { useGlobal } from "./Global";
+
 
 const AppLayout = () => {
   const [user, setUser] = useState(null);
+  const userToken = useGlobal((state) => state.userToken);
+
   // Gets the user information using Session and Cookie.
   useEffect(() => {
     const getUser = () => {
-      Axios.get("http://localhost:5000/api/users/login/success", {
-        headers: {
-          Accept: "application/json",
-          // Authorization: `Bearer ${token}`,
-          "Content-Type": "application/json",
-          "Access-Control-Allow-Credentials": true,
-        },
-        withCredentials: true,
-      })
-        .then((resObject) => {
-          setUser(resObject.data);
-          console.log(setUser);
+      if (userToken === null) return;
+      else {
+        Axios.get("http://localhost:5000/api/users/login/success", {
+          headers: {
+            Authorization: `Bearer ${userToken}`,
+            Accept: "application/json",
+            "Content-Type": "application/json",
+            "Access-Control-Allow-Credentials": true,
+          },
+          withCredentials: true,
         })
-        .catch((err) => {
-          console.log(err);
-        });
+          .then((resObject) => {
+            setUser(resObject.data);
+          })
+          .catch((err) => {
+            console.log(err);
+          });
+      }
     };
     getUser();
-  }, []);
+  }, [userToken]);
+
   return (
     <>
       <nav className="max-h-full flex w-2/12">
         <Sidebar user={user} />
       </nav>
       <div className="w-10/12">
-        <TopBar />
+        <TopBar user={user} />
         <Outlet />
-        <ShoppingCart />
+        <ShoppingCart user={user} />
       </div>
     </>
   );
@@ -64,14 +71,15 @@ const AppLayout = () => {
 
 function App() {
   const [user, setUser] = useState(null);
+  const userToken = useGlobal((state) => state.userToken);
 
   // Gets the user information using Session and Cookie.
   useEffect(() => {
     const getUser = () => {
       Axios.get("http://localhost:5000/api/users/login/success", {
         headers: {
+          Authorization: `Bearer ${userToken}`,
           Accept: "application/json",
-          // Authorization: `Bearer ${token}`,
           "Content-Type": "application/json",
           "Access-Control-Allow-Credentials": true,
         },
@@ -79,14 +87,13 @@ function App() {
       })
         .then((resObject) => {
           setUser(resObject.data);
-          console.log(resObject.data)
         })
         .catch((err) => {
           console.log(err);
         });
     };
     getUser();
-  }, []);
+  }, [userToken]);
 
   return (
     <div className="flex">
@@ -95,9 +102,10 @@ function App() {
           <Route path="/" element={<Home />} />
           <Route path="/products" element={<Products />} />
           <Route path="/products/:productId" element={<ProductInfo />} />
-          <Route path="/services" element={<Services />} />
+          <Route path="/services" element={<Services user={user} />} />
           <Route path="/support" element={<Support />} />
           <Route path="/about" element={<About />} />
+          <Route path="/settings" element={<Settings user={user} />} />
           {/* Makes Sure that Customer Accounts don't have access to Admin Pages. */}
           <Route
             path="/dashboard"
@@ -124,7 +132,10 @@ function App() {
           path="/signup"
           element={user ? <Navigate to="/" /> : <Signup />}
         />
-        <Route path="/checkout-page" element={<Checkout />} />
+        <Route
+          path="/checkout-page"
+          element={user ? <Checkout user={user} /> : <Checkout />}
+        />
       </Routes>
     </div>
   );

@@ -1,32 +1,90 @@
-import PaymentSuccess from './PaymentSuccessModal'
-import { SearchIcon } from '@heroicons/react/solid'
-import { useGlobal } from '../Global'
+import PaymentSuccess from "./PaymentSuccessModal";
+import { SearchIcon } from "@heroicons/react/solid";
+import { useGlobal } from "../Global";
 
-import { useEffect } from 'react'
-import { ShoppingCartIcon } from '@heroicons/react/outline'
+import { useEffect } from "react";
+import { ShoppingCartIcon } from "@heroicons/react/outline";
+
+import Axios from "axios";
 
 export default function TopBar() {
-  const toggleCart = useGlobal((state) => state.toggleCart)
+  const userToken = useGlobal((state) => state.userToken);
 
-  const togglePaymentSuccessModal = useGlobal((state) => state.togglePaymentSuccessModal )
-  const emptyCart = useGlobal((state) => state.emptyCart )
+  const toggleCart = useGlobal((state) => state.toggleCart);
+  const cartItems = useGlobal((state) => state.cartItems);
+
+  const togglePaymentSuccessModal = useGlobal(
+    (state) => state.togglePaymentSuccessModal
+  );
+  const emptyCart = useGlobal((state) => state.emptyCart);
 
   const receipt = {
     payment_intent: "",
     payment_intent_client_secret: "",
     redirect_status: "",
-  }
+  };
 
   useEffect(() => {
-      receipt.payment_intent = window.location.search.split("&")[0].split("?")[1];
-      receipt.payment_intent_client_secret = window.location.search.split("&")[1];
-      receipt.redirect_status = window.location.search.split("=")[3];
+    receipt.payment_intent = new URLSearchParams(window.location.search).get(
+      "payment_intent"
+    );
+    receipt.payment_intent_client_secret = new URLSearchParams(
+      window.location.search
+    ).get("payment_intent_client_secret");
+    receipt.redirect_status = new URLSearchParams(window.location.search).get(
+      "redirect_status"
+    );
 
-      if ( receipt.redirect_status === "succeeded" ) {
-          emptyCart()
-          togglePaymentSuccessModal(true)
-      }
-  }, []);
+    if (receipt.redirect_status === "succeeded") {
+      Axios.get("http://localhost:5000/api/users/login/success", {
+        headers: {
+          Authorization: `Bearer ${userToken}`,
+          Accept: "application/json",
+          "Content-Type": "application/json",
+          "Access-Control-Allow-Credentials": true,
+        },
+        withCredentials: true,
+      })
+        .then((resObject) => {
+          const user = resObject.data;
+          Axios.get(
+            "https://api.stripe.com/v1/payment_intents/" +
+              receipt.payment_intent,
+            {
+              headers: {
+                Authorization: `Bearer ${process.env.REACT_APP_STRIPE_SECRET_KEY}`,
+                Accept: "application/json",
+                "Content-Type": "application/json",
+                "Access-Control-Allow-Credentials": true,
+              },
+              withCredentials: true,
+            }
+          ).then((transaction_record) => {
+            Axios.post("http://localhost:5000/api/orders", {
+              headers: {
+                Accept: "application/json",
+                "Content-Type": "application/json",
+                "Access-Control-Allow-Credentials": true,
+              },
+              data: { user, cartItems, receipt, transaction_record },
+              withCredentials: true,
+            })
+              .then((res) => console.log(res))
+              .catch((err) => {
+                console.log(err);
+              });
+          });
+        })
+        .catch((err) => {
+          console.log(err);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+      emptyCart();
+      togglePaymentSuccessModal(true);
+    }
+  });
 
   return (
     <div className="sticky top-0 z-10 flex-shrink-0 flex h-16 bg-white shadow">
@@ -52,7 +110,7 @@ export default function TopBar() {
         </div>
         <div className="ml-4 flex items-center md:ml-6">
           <button
-            onClick={ toggleCart }
+            onClick={toggleCart}
             className="bg-white p-1 rounded-full text-gray-400 hover:text-gray-500"
           >
             <span className="sr-only">View notifications</span>
@@ -62,5 +120,5 @@ export default function TopBar() {
         </div>
       </div>
     </div>
-  )
+  );
 }
