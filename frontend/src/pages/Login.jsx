@@ -1,22 +1,46 @@
-import { Link } from "react-router-dom"
 import Logo from "../assets/images/logo.jpg"
+import { Link } from "react-router-dom"
 import { useState } from "react"
 
 import Axios from "axios"
 import { useGlobal } from "../Global"
 
-export default function Login() {
-  const [email, setEmail] = useState(null)
-  const [password, setPassword] = useState(null)
+function classNames(...classes) {
+  return classes.filter(Boolean).join(' ')
+}
 
-  const setUserToken = useGlobal((state) => state.setUserToken)
+export default function Login() {
+  const cartItems = useGlobal(state => state.cartItems)
+  const setUserToken = useGlobal(state => state.setUserToken)
+
+  const [fields, setFields] = useState([
+    { name: "email", input: "", error: false }, 
+    { name: "password", input: "", error: false }, 
+    { name: "invalid", error: false }
+  ])
+
+  const handleErrors = ( name, status ) => { setFields( prevFields => 
+    prevFields.map((field) => field.name === name ? { ...field, error: status } : { ...field }));
+  };
+
+  const handleInputs = ( name, i ) => { setFields( prevFields =>
+    prevFields.map((field) => field.name === name ? { ...field, input: i.target.value, error: false } : { ...field }));
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    Axios.post("http://localhost:5000/api/users/login", { headers: { Accept: "application/json", "Content-Type": "application/json", "Access-Control-Allow-Credentials": true, }, data: { email, password }, withCredentials: true })
-      .then((res) => {setUserToken(res.data.token); window.location = "/"}) 
-      .catch((err) => { console.log(err) })
+    if ( fields[0].input === "" ) handleErrors( "email", true )
+    if ( fields[1].input === "" ) handleErrors( "password", true )
+    if ( fields[0].input !== "" && fields[1].input !== "") {
+      Axios.post("http://localhost:5000/api/users/login", { headers: { Accept: "application/json", "Content-Type": "application/json", "Access-Control-Allow-Credentials": true, }, data: { email: fields[0].input, password: fields[1].input }, withCredentials: true })
+      .then((res) => { 
+        setUserToken( res.data.token ); 
+        if ( cartItems.length > 0 ) window.location = "/checkout-page"
+        else window.location = "/"
+      }) 
+      .catch((err) => { handleErrors( "invalid", true ) })
+    }
   }
 
   return (
@@ -103,21 +127,23 @@ export default function Login() {
               </div>
 
               <div className="mt-6">
-                {/* <form action="http://localhost:5000/api/users/login" method="POST" className="space-y-6"> */}
+              { fields[2].error ? <p className="text-center text-sm font-bold text-red-500">Invalid Email or Password!</p> : null }
                 <div>
                   <label htmlFor="email" className="block text-sm font-medium text-gray-700">
                     Email address
                   </label>
                   <div className="mt-1">
                     <input
-                      onChange={i => setEmail(i.target.value)}
+                      onChange = { i => handleInputs( "email", i ) }
+                      defaultValue = { fields[0].input }
                       id="email"
                       name="email"
                       type="email"
                       autoComplete="email"
                       required
-                      className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-                    />
+                      className={classNames( fields[0].error ? 'border-red-500 border-2' : 'border-gray-300',
+                        'appearance-none block w-full px-3 py-2 border rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-200 focus:border-indigo-200 sm:text-sm')}/>
+                    { fields[0].error ? <p className="text-center text-sm font-medium text-red-500">Email field is required.</p> : null }
                   </div>
                 </div>
 
@@ -127,14 +153,16 @@ export default function Login() {
                   </label>
                   <div className="mt-1">
                     <input
-                      onChange={i => setPassword(i.target.value)}
+                      onChange = { i => handleInputs( "password", i ) }
+                      defaultValue = { fields[1].input }
                       id="password"
                       name="password"
                       type="password"
                       autoComplete="current-password"
                       required
-                      className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-                    />
+                      className={classNames( fields[1].error ? 'border-red-500 border-2' : 'border-gray-300',
+                        'appearance-none block w-full px-3 py-2 border rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-200 focus:border-indigo-200 sm:text-sm')}/>
+                    { fields[1].error ? <p className="text-center text-sm font-medium text-red-500">Password field is required.</p> : null }
                   </div>
                 </div>
 
@@ -171,7 +199,6 @@ export default function Login() {
                     Sign Up
                   </Link>
                 </div>
-                {/* </form> */}
               </div>
             </div>
           </div>

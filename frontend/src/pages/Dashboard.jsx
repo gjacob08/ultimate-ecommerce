@@ -86,7 +86,7 @@ export default function Dashboard() {
                         {order.user.name}
                       </td>
                       <td className="text-center whitespace-nowrap px-2 py-2 text-sm font-medium text-gray-900">
-                        {"$" + order.totalPrice}
+                        {"$" + order.totalPrice.toFixed(2)}
                       </td>
                       <td className="text-center whitespace-nowrap px-2 py-2 text-sm text-gray-500">
                         { order.isPaid ? <div className="p-1 rounded-md text-black bg-green-300">Paid</div> : <div className="p-1 rounded-md text-black bg-red-300">Not Paid</div> }
