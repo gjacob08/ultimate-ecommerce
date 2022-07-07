@@ -46,7 +46,7 @@ export default function PaymentSuccess() {
                                         </Dialog.Title>
                                         <div className="mt-2">
                                             <p className="text-sm text-gray-500">
-                                                Thank you for buying!
+                                                Thank you for Buying!
                                             </p>
                                         </div>
                                     </div>

@@ -33,7 +33,7 @@ const AppLayout = () => {
   // Gets the user information using Session and Cookie.
   useEffect(() => {
     const getUser = () => {
-      if (userToken === null) return;
+      if ( userToken == null ) return
       else {
         Axios.get("http://localhost:5000/api/users/login/success", {
           headers: {
@@ -102,7 +102,7 @@ function App() {
           <Route path="/" element={<Home />} />
           <Route path="/products" element={<Products />} />
           <Route path="/products/:productId" element={<ProductInfo />} />
-          <Route path="/services" element={<Services user={user} />} />
+          <Route path="/services" element={<Services user={ user } />} />
           <Route path="/support" element={<Support />} />
           <Route path="/about" element={<About />} />
           <Route path="/settings" element={<Settings user={user} />} />

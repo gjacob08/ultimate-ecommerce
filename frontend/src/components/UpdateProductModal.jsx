@@ -56,7 +56,8 @@ export default function UpdateProductModal() {
                       Product Details Form
                     </Dialog.Title>
                     <div className="mt-4">
-                      <form className="space-y-6" action={"http://localhost:5000/api/products/" + product._id} method="POST">
+                    <iframe name="dummyframe" id="dummyframe" className='sr-only'></iframe>
+                      <form className="space-y-6" target="dummyframe" action={"http://localhost:5000/api/products/" + product._id} method="POST">
                         <div className="block sm:flex">
                           <div className='w-full'>
                             <div className='block sm:flex justify-between'>
@@ -157,6 +158,7 @@ export default function UpdateProductModal() {
                         </div>
                         <div>
                           <button
+                            onClick={() => { toggleUpdateProductModal(); window.location = "/inventory" }}
                             type="submit"
                             className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
                             Update Product Details

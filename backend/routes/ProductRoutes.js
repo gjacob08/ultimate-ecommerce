@@ -7,22 +7,28 @@ const productRoute = express.Router()
 const FRONTEND_URL = "http://localhost:3000"
 
 // GET ALL PRODUCTS
-productRoute.get("/",  asyncHandler(
-    async(req, res) => {
+productRoute.get("/",  asyncHandler( async(req, res) => {
+
+    // Log this request
+    console.log( (new Date()).toISOString(), req.method, req.baseUrl );
+
         const products = await Product.find()
         res.json(products);
     })
 );
 
 // GET A PRODUCT
-productRoute.get("/:id",  asyncHandler(
-    async(req, res) => {
+productRoute.get("/:id",  asyncHandler( async(req, res) => {
+
+    // Log this request
+    console.log( (new Date()).toISOString(), req.method, req.baseUrl );
+
         const product = await Product.findById(req.params.id);
-        if (product) res.json(product);
-        else {
-            res.status(404)
-            throw new Error("Product Not Found")
-        }
+            if (product) res.json(product);
+            else {
+                res.status(404)
+                throw new Error("Product Not Found")
+            }
     })
 );
 
@@ -36,11 +42,14 @@ productRoute.post("/:id",  asyncHandler( async(req, res) => {
     const productId = req.params.id;
 
     // Get Data to be modified
-    const data = req.body;
+    const data = req.body.data;
+
+    console.log(productId)
+    console.log(data)
 
     // Execute Update
     Product.findOneAndUpdate({ _id: productId }, { ...data, 'timestamps.modifiedOn': Date.now() }, { new: true })
-        .then( updatedProduct => { return res.redirect(FRONTEND_URL + "/inventory") })
+        .then( updatedProduct => res.send( updatedProduct ) )
         .catch( error => {
             res.status(500).json({
                 'status': 'Error',

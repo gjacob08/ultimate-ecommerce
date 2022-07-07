@@ -34,7 +34,7 @@ const customerNavigation = [
   { name: "Support", href: "support", icon: SupportIcon },
 ];
 
-let navigation = [];
+let navigation = [] 
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
@@ -46,21 +46,17 @@ export default function Sidebar({ user }) {
   const logoutHandler = async (e) => {
     e.preventDefault();
 
-    setUserToken(null);
-    window.location = "/";
-  };
-
+    setUserToken(null)
+    window.location = "/"
+  }
+  
   const userNavigation = [
-    { name: "Your Profile", href: "profile" },
-    { name: "Settings", href: "settings" },
-    { name: "Sign out", href: logoutHandler },
-  ];
-
-  user
-    ? user.role === "admin"
-      ? (navigation = adminNavigation)
-      : (navigation = customerNavigation)
-    : (navigation = customerNavigation);
+    { name: 'Your Profile', href: '/services' },
+    { name: 'Settings', href: '/support' },
+    { name: 'Sign out', href: logoutHandler },
+  ]
+  
+  user ? user.role === "admin" ? (navigation = adminNavigation) : (navigation = customerNavigation) : (navigation = customerNavigation);
 
   return (
     <div className="sticky top-0 h-screen flex-1 flex flex-col min-h-0 bg-gray-800">
@@ -117,8 +113,7 @@ export default function Sidebar({ user }) {
 
       {/* Settings Section */}
       <div className="flex-shrink-0 flex bg-gray-700 p-4">
-        {user ? (
-          <div className="flex items-center justify-center">
+          { user ? (<div className="flex items-center justify-center">
             <Menu as="div" className="ml-3 relative">
               <div>
                 <Menu.Button className="max-w-xs flex w-full items-center text-sm rounded-full">
@@ -162,19 +157,13 @@ export default function Sidebar({ user }) {
               >
                 <Menu.Items className="origin-bottom-left w-full absolute left-0 bottom-10 mt-2 w-48 rounded-md shadow-lg py-1 bg-white ring-1 ring-black ring-opacity-5 focus:outline-none">
                   {userNavigation.map((item) => (
-                    <a
-                      href={item.href}
-                      className="flex-shrink-0 w-full group block"
-                    >
+                    <a key={item.name} href={item.href} className="flex-shrink-0 w-full group block">
                       <Menu.Item key={item.name}>
                         {({ active }) => (
-                          <button
-                            onClick={item.href}
-                            className={classNames(
-                              active ? "bg-gray-100 w-full" : "",
-                              "block px-4 py-2 text-sm text-gray-700 w-full"
-                            )}
-                          >
+                          <button onClick={item.href} className={classNames(
+                              active ? 'bg-gray-100 w-full' : '',
+                              'block px-4 py-2 text-sm text-gray-700 w-full'
+                            )}>
                             {item.name}
                           </button>
                         )}
@@ -184,12 +173,7 @@ export default function Sidebar({ user }) {
                 </Menu.Items>
               </Transition>
             </Menu>
-          </div>
-        ) : (
-          <Link to="login" className="mx-auto">
-            <div className="text-white text-center">Log In</div>
-          </Link>
-        )}
+          </div>) : (<Link to="login" className='mx-auto'><div className='text-white text-center'>Log In</div></ Link>) }
       </div>
     </div>
   );

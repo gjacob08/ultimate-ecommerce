@@ -1,3 +1,4 @@
+import ErrorCard from "../components/ErrorCard"
 import Logo from "../assets/images/logo.jpg"
 import { useState } from "react"
 import Axios from "axios"
@@ -5,19 +6,35 @@ import Axios from "axios"
 import { useGlobal } from "../Global"
 
 export default function Signup() {
-    const [firstName, setFirstName] = useState(null)
-    const [lastName, setLastName] = useState(null)
-    const [email, setEmail] = useState(null)
-    const [password, setPassword] = useState(null)
+    const cartItems = useGlobal(state => state.cartItems)
+    const [errorMessages, setErrorMessages] = useState([])
+    const [toggleError, setToggleError] = useState(false)
+
+    const [firstName, setFirstName] = useState("")
+    const [lastName, setLastName] = useState("")
+    const [email, setEmail] = useState("")
+    const [password, setPassword] = useState("")
 
     const setUserToken = useGlobal((state) => state.setUserToken)
 
     const handleSubmit = async (e) => {
+        const caughtErrors = []
         e.preventDefault();
 
-        Axios.post("http://localhost:5000/api/import/user", { headers: { Accept: "application/json", "Content-Type": "application/json", "Access-Control-Allow-Credentials": true, }, data: { firstName, lastName, email, password }, withCredentials: true })
-        .then((res) => {setUserToken(res.data.token); window.location = "/"}) 
-        .catch((err) => { console.log(err) })
+        if (firstName === "") caughtErrors.push("First Name field is empty."); setToggleError(true)
+        if (lastName === "") caughtErrors.push("Last Name field is empty."); setToggleError(true)
+        if (email === "") caughtErrors.push("Email field is empty."); setToggleError(true)
+        if (password === "") caughtErrors.push("Password field is empty."); setToggleError(true)
+        if (firstName !== "" && lastName !== "" && email !== "" && password !== "") { setToggleError(false);
+            Axios.post("http://localhost:5000/api/import/user", { headers: { Accept: "application/json", "Content-Type": "application/json", "Access-Control-Allow-Credentials": true, }, data: { firstName, lastName, email, password }, withCredentials: true })
+                .then((res) => {
+                    setUserToken(res.data.token)
+                    if ( cartItems.length > 0 ) window.location = "/checkout-page"
+                    else window.location = "/"
+                }) 
+                .catch((err) => { caughtErrors.push(err.response.data); setToggleError(true) })
+        }
+        setErrorMessages(caughtErrors)
     }
     
     return (
@@ -33,6 +50,7 @@ export default function Signup() {
                 </div>
 
                 <div className="mx-auto mt-4 w-max bg-white py-8 px-4 shadow sm:rounded-xl sm:px-10">
+                { toggleError ? <div className="mb-2"><ErrorCard header={"There are errors with your submission."} messages={errorMessages} /></div> : null }
                         <div className="block sm:flex">
                             <div className="mr-8 w-1/2">
                                 <div>
