@@ -1,5 +1,4 @@
 import { InboxIcon, SparklesIcon } from '@heroicons/react/outline'
-import PaymentSuccess from '../components/PaymentSuccessModal';
 
 export default function Home() {
     return (
@@ -27,7 +26,7 @@ export default function Home() {
                                         </p>
                                         <div className="mt-6">
                                             <a
-                                                href="#"
+                                                href="products"
                                                 className="inline-flex px-4 py-2 border border-transparent text-base font-medium rounded-md shadow-sm text-white bg-indigo-600 hover:bg-indigo-700"
                                             >
                                                 Get started
@@ -89,7 +88,7 @@ export default function Home() {
                                         </p>
                                         <div className="mt-6">
                                             <a
-                                                href="#"
+                                                href="products"
                                                 className="inline-flex px-4 py-2 border border-transparent text-base font-medium rounded-md shadow-sm text-white bg-indigo-600 hover:bg-indigo-700"
                                             >
                                                 Get started

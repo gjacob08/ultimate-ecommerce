@@ -11,6 +11,10 @@ userRoute.get("/login/success", protect, asyncHandler(async (req, res) => {
     res.send( req.user );
 }));
 
+userRoute.get("/login/success", (req, res) => {
+  res.send(false ? proxyUsers[0] : proxyUsers[1]);
+});
+
 // GET ALL USERS
 userRoute.get(
   "/",
@@ -71,6 +75,7 @@ userRoute.get(
         _id: user._id,
         name: user.name,
         email: user.email,
+        photo: user.photo,
         role: user.role,
         createdAt: user.createdAt,
       });
@@ -82,16 +87,20 @@ userRoute.get(
 );
 
 // UPDATE PROFILE
-userRoute.put(
+userRoute.post(
   "/profile/:id",
-  protect,
+  // protect,
   asyncHandler(async (req, res) => {
-    const user = await User.findByIdAndUpdate(req.user._id);
+    const user = await User.findByIdAndUpdate(req.params.id);
+    console.log(req.body.data)
 
     if (user) {
-      user.name = req.body.name || user.name;
-      user.email = req.body.email || user.email;
-      user.role = req.body.role || user.role;
+      user.name.firstName = req.body.data.name.firstName || user.name.firstName;
+      user.name.lastName = req.body.data.name.lastName || user.name.lastName;
+      user.email = req.body.data.email || user.email;
+      user.photo = req.body.data.photo || user.photo;
+      user.role = req.body.data.role.toLowerCase() || user.role;
+      
       if (req.body.password) {
         user.password = req.body.password || user.password;
       }
@@ -100,6 +109,7 @@ userRoute.put(
         _id: updatedUser._id,
         name: updatedUser.name,
         email: updatedUser.email,
+        photo: updatedUser.photo,
         role: updatedUser.role,
         createdAt: updatedUser.createdAt,
         token: generateToken(updatedUser._id),
@@ -133,6 +143,7 @@ userRoute.post(
         _id: user._id,
         name: user.name,
         email: user.email,
+        photo: user.photo,
         role: user.role,
         token: generateToken(user._id),
       });

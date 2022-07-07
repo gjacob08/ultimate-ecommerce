@@ -1,28 +1,30 @@
-import PaymentSuccess from './PaymentSuccessModal'
-import { SearchIcon } from '@heroicons/react/solid'
-import { useGlobal } from '../Global'
+import PaymentSuccess from "./PaymentSuccessModal";
+import { SearchIcon } from "@heroicons/react/solid";
+import { useGlobal } from "../Global";
 
-import { useEffect } from 'react'
-import { ShoppingCartIcon } from '@heroicons/react/outline'
+import { useEffect } from "react";
+import { ShoppingCartIcon } from "@heroicons/react/outline";
 
-import Axios from "axios"
+import Axios from "axios";
 
 let mountedOnce = false
 
 export default function TopBar() {
-  const userToken = useGlobal((state) => state.userToken)
+  const userToken = useGlobal((state) => state.userToken);
 
-  const toggleCart = useGlobal((state) => state.toggleCart)
-  const cartItems = useGlobal((state) => state.cartItems)
+  const toggleCart = useGlobal((state) => state.toggleCart);
+  const cartItems = useGlobal((state) => state.cartItems);
 
-  const togglePaymentSuccessModal = useGlobal((state) => state.togglePaymentSuccessModal )
-  const emptyCart = useGlobal((state) => state.emptyCart )
+  const togglePaymentSuccessModal = useGlobal(
+    (state) => state.togglePaymentSuccessModal
+  );
+  const emptyCart = useGlobal((state) => state.emptyCart);
 
   const receipt = {
     payment_intent: "",
     payment_intent_client_secret: "",
     redirect_status: "",
-  }
+  };
 
   useEffect(() => {
       if ( !mountedOnce ) {
@@ -79,7 +81,7 @@ export default function TopBar() {
         </div>
         <div className="ml-4 flex items-center md:ml-6">
           <button
-            onClick={ toggleCart }
+            onClick={toggleCart}
             className="bg-white p-1 rounded-full text-gray-400 hover:text-gray-500"
           >
             <span className="sr-only">View notifications</span>
@@ -89,5 +91,5 @@ export default function TopBar() {
         </div>
       </div>
     </div>
-  )
+  );
 }
